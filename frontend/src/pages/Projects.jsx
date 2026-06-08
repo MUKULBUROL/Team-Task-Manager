@@ -10,18 +10,18 @@ const Projects = () => {
   const [error, setError] = useState('');
   const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await projectService.getProjects();
-        setProjects(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load projects');
-        setLoading(false);
-      }
-    };
+  const fetchProjects = async () => {
+    try {
+      const response = await projectService.getProjects();
+      setProjects(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to load projects');
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchProjects();
   }, []);
 
@@ -31,11 +31,11 @@ const Projects = () => {
 
       {user && user.role === 'ADMIN' && (
         <div className="mb-6">
-          <CreateProjectForm />
+          <CreateProjectForm onProjectCreated={fetchProjects} />
         </div>
       )}
 
-      <ProjectList projects={projects} error={error} loading={loading} />
+      <ProjectList projects={projects} error={error} loading={loading} onProjectUpdated={fetchProjects} />
     </div>
   );
 };

@@ -61,13 +61,7 @@ export const deleteTask = async (taskId, userId, userRole) => {
 
   // Check if user is authorized to delete this task
   if (userRole !== 'ADMIN') {
-    const project = await prisma.project.findUnique({
-      where: { id: task.projectId }
-    });
-
-    if (!project) {
-      throw new Error('Project not found');
-    }
+    throw new Error('User is not authorized to delete this task. Admin access required.');
   }
 
   return await prisma.task.delete({

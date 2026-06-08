@@ -11,23 +11,20 @@ const Tasks = () => {
   const [error, setError] = useState('');
   const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await taskService.getTasks();
-        setTasks(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load tasks');
-        setLoading(false);
-      }
-    };
+  const fetchTasks = async () => {
+    try {
+      const response = await taskService.getTasks();
+      setTasks(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to load tasks');
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchTasks();
   }, []);
-
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (error) return <div className="p-6 text-red-500">{error}</div>;
 
   return (
     <div className="p-6">
@@ -35,11 +32,17 @@ const Tasks = () => {
 
       {user && user.role === 'ADMIN' && (
         <div className="mb-6">
-          <CreateTaskForm />
+          <CreateTaskForm onTaskCreated={fetchTasks} />
         </div>
       )}
 
-      <TaskList tasks={tasks} isAdmin={user?.role === 'ADMIN'} />
+      {loading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <div className="text-red-500">{error}</div>
+      ) : (
+        <TaskList tasks={tasks} isAdmin={user?.role === 'ADMIN'} onTaskUpdated={fetchTasks} />
+      )}
     </div>
   );
 };

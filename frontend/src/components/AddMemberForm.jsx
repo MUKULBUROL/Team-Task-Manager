@@ -20,7 +20,10 @@ const AddMemberForm = ({ projectId, onAddMember }) => {
       // Refresh project members
       if (onAddMember) onAddMember();
     } catch (err) {
-      setError('Failed to add member');
+      setError(
+        err?.response?.data?.message ||
+        'Failed to add member'
+      );
     } finally {
       setLoading(false);
     }
@@ -37,7 +40,7 @@ const AddMemberForm = ({ projectId, onAddMember }) => {
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
           className="flex-1 px-3 py-2 border border-gray-300 rounded"
-          placeholder="Enter user ID"
+          placeholder="Enter user email or ID"
         />
         <button
           type="submit"

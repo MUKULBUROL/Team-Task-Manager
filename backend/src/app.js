@@ -1,14 +1,12 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { json, urlencoded } from 'express';
 import authRoutes from './routes/auth.js';
 import projectRoutes from './routes/project.js';
 import taskRoutes from './routes/task.js';
 import dashboardRoutes from './routes/dashboard.js';
-
-// Load environment variables
-dotenv.config();
+import { notFound, errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,6 +26,10 @@ app.use('/api/dashboard', dashboardRoutes);
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
+
+// Error handling middleware
+app.use(notFound);
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {

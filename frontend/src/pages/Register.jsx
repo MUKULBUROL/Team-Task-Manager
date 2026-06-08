@@ -30,9 +30,13 @@ const Register = () => {
       const response = await authService.register(formData);
       const { user, token } = response.data;
       login(user, token);
+      setLoading(false);
       navigate('/dashboard');
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      setError(
+        err?.response?.data?.message ||
+        'Registration failed. Please try again.'
+      );
       setLoading(false);
     }
   };

@@ -4,7 +4,7 @@ import EmptyState from './EmptyState';
 import ErrorMessage from './ErrorMessage';
 import LoadingSpinner from './LoadingSpinner';
 
-const TaskList = ({ tasks, error, loading }) => {
+const TaskList = ({ tasks, error, loading, isAdmin, onTaskUpdated }) => {
   if (loading) return <LoadingSpinner />;
 
   if (error) return <ErrorMessage message={error} />;
@@ -16,7 +16,7 @@ const TaskList = ({ tasks, error, loading }) => {
   return (
     <div className="space-y-4">
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
+        <TaskCard key={task.id} task={task} isAdmin={isAdmin} onTaskUpdated={onTaskUpdated} />
       ))}
     </div>
   );

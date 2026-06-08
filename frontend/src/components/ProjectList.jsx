@@ -4,14 +4,7 @@ import EmptyState from './EmptyState';
 import ErrorMessage from './ErrorMessage';
 import LoadingSpinner from './LoadingSpinner';
 
-const ProjectList = ({ projects, error, loading }) => {
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const handleAddMember = () => {
-    // This will trigger a re-render to show updated members
-    setRefreshKey(prev => prev + 1);
-  };
-
+const ProjectList = ({ projects, error, loading, onProjectUpdated }) => {
   if (loading) return <LoadingSpinner />;
 
   if (error) return <ErrorMessage message={error} />;
@@ -23,7 +16,7 @@ const ProjectList = ({ projects, error, loading }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {projects.map((project) => (
-        <ProjectCard key={project.id} project={project} onAddMember={handleAddMember} />
+        <ProjectCard key={project.id} project={project} onAddMember={onProjectUpdated} />
       ))}
     </div>
   );

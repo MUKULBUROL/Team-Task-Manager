@@ -16,7 +16,7 @@ model User {
   password   String
   name      String?
   role      Role     @default(MEMBER)
-  projects   Project[]    @relation(name: "ProjectOwner", references: [id])
+  projects   Project[]    @relation(name: "ProjectOwner")
   projectMembers ProjectMember[]
   tasks      Task[]
   createdAt   DateTime   @default(now())

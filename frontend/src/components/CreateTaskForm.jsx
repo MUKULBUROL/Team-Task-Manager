@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { taskService } from '../services/taskService';
 
-const CreateTaskForm = () => {
+const CreateTaskForm = ({ onTaskCreated }) => {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -23,10 +23,15 @@ const CreateTaskForm = () => {
       await taskService.createTask(formData);
       setSuccess(true);
       setFormData({ title: '', description: '', projectId: '', assignedToId: '' });
-      // Refresh tasks list
+      if (onTaskCreated) {
+        onTaskCreated();
+      }
     } catch (err) {
-      setError('Failed to create task');
-    } finally {
+      setError(
+        err?.response?.data?.message ||
+        'Failed to create task'
+      );
+    }finally {
       setLoading(false);
     }
   };

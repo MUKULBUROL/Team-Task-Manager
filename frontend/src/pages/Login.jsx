@@ -29,6 +29,7 @@ const Login = () => {
       const response = await authService.login(formData);
       const { user, token } = response.data;
       login(user, token);
+      setLoading(false);
       navigate('/dashboard');
     } catch (err) {
       setError('Invalid credentials. Please try again.');

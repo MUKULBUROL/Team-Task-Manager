@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { projectService } from '../services/projectService';
 
-const CreateProjectForm = () => {
+const CreateProjectForm = ({ onProjectCreated }) => {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', description: '' });
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,9 @@ const CreateProjectForm = () => {
       await projectService.createProject(formData);
       setSuccess(true);
       setFormData({ name: '', description: '' });
-      // Refresh projects list
+      if (onProjectCreated) {
+        onProjectCreated();
+      }
     } catch (err) {
       setError('Failed to create project');
     } finally {
